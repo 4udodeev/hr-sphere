@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class EducationOrg:
+class EducationOrg(models.Model):
     """Обучающая организация"""
     display_name = models.CharField('Краткое имя', max_length=255, default='')
     fullname = models.TextField('Полное наименование', default='')
@@ -18,31 +18,18 @@ class EducationOrg:
 class EducationMethod(models.Model):
     """Учебная программа"""
 
-    EVENT_FORMS = (
-        'Первоначальная подготовка',
-        'Периодическая подготовка',
-        'Стажировка',
-        'Практика',
-        'Лекция',
-        'Семинар',
-        'Тренинг',
-        'Экзамен',
-        'Конференция'
-    )
-
     code = models.CharField('Код', max_length=255, default='')
     name = models.CharField('Учебная программа', max_length=255, default='')
-    education_org_id = models.ForeignKey(EducationOrg, verbose_name='Обучающая организация', on_delete=models.PROTECT)
-    event_form = models.CharField('Форма проведения', choices=EVENT_FORMS, default='')
+    education_org_id = models.ForeignKey(EducationOrg, verbose_name='Обучающая организация', on_delete=models.PROTECT, null=True, blank=True)
+    # event_form = models.TextField('Форма проведения', choices=EVENT_FORMS, default='Лекция')
 
     def __str__(self):
         return self.name
 
-    def __int__(self, code, name, education_org_id, event_form):
+    def __int__(self, code, name, education_org_id):
         self.code = code
         self.name = name
         self.education_org_id = education_org_id
-        self.event_form = event_form
 
 
 class Event(models.Model):

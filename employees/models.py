@@ -120,30 +120,6 @@ class Subdivision(models.Model):
         self.start_date = start_date
 
 
-class Position(models.Model):
-    """Должность"""
-    code = models.CharField('Код', max_length=255, default='')
-    name = models.CharField('Название', max_length=255, default='')
-    is_boss = models.BooleanField('Является руководителем', default=False)
-    employee = models.OneToOneField(Employee, on_delete=models.PROTECT, verbose_name='Сотрудник', null=True, blank=True)
-    org_id = models.ForeignKey(Organization, on_delete=models.PROTECT, verbose_name='Организация')
-    subdivision_id = models.ForeignKey(Subdivision, on_delete=models.PROTECT, verbose_name='Подразделение')
-    education_plan = models.ForeignKey(EducationPlan, on_delete=models.PROTECT, verbose_name='Учебный план')
-    
-    doc_info = models.TextField('doc_info', null=True, blank=True)
-
-
-    def __str__(self):
-        return self.name
-
-    def __int__(self, code, name, is_boss, org_id, subdivision_id):
-        self.code = code
-        self.name = name
-        self.is_boss = is_boss,
-        self.org_id = org_id
-        self.subdivision_id = subdivision_id
-
-
 class Function(models.Model):
     """Функция должности"""
     code = models.CharField('Код', max_length=128, null=True, blank=True)
@@ -160,3 +136,27 @@ class Function(models.Model):
     
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
+        
+
+class Position(models.Model):
+    """Должность"""
+    code = models.CharField('Код', max_length=255, default='')
+    name = models.CharField('Название', max_length=255, default='')
+    is_boss = models.BooleanField('Является руководителем', default=False)
+    employee = models.OneToOneField(Employee, on_delete=models.PROTECT, verbose_name='Сотрудник', null=True, blank=True)
+    org_id = models.ForeignKey(Organization, on_delete=models.PROTECT, verbose_name='Организация')
+    subdivision_id = models.ForeignKey(Subdivision, on_delete=models.PROTECT, verbose_name='Подразделение')
+    function = models.ManyToManyField(Function, on_delete=models.PROTECT, verbose_name='Функции')
+    
+    doc_info = models.TextField('doc_info', null=True, blank=True)
+
+
+    def __str__(self):
+        return self.name
+
+    def __int__(self, code, name, is_boss, org_id, subdivision_id):
+        self.code = code
+        self.name = name
+        self.is_boss = is_boss,
+        self.org_id = org_id
+        self.subdivision_id = subdivision_id

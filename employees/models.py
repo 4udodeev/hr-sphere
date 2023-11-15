@@ -1,8 +1,9 @@
 import datetime
+from typing import Any
 
 from django.db import models
 
-from training_center.models import EducationPlan
+from training_center.models import EducationMethod
 
 
 class Employee(models.Model):
@@ -41,6 +42,7 @@ class Employee(models.Model):
     change_logs = models.JSONField('История изменений', default=dict,
                                    blank=True)  # Первое изменение должно прописываться при создании
     history_states = models.JSONField('Состояния работника', default=dict, blank=True)
+    doc_info = models.TextField('doc_info', null=True, blank=True)
 
     def __str__(self):
         if self.middlename:
@@ -81,6 +83,8 @@ class Organization(models.Model):
     display_name = models.CharField('Краткое имя', max_length=255, default='')
     fullname = models.TextField('Полное наименование', default='')
     func_managers = models.ManyToManyField(Employee, verbose_name='Функциональыне руководители', blank=True)
+    
+    doc_info = models.TextField('doc_info', null=True, blank=True)
 
     def __str__(self):
         return self.display_name
@@ -101,6 +105,8 @@ class Subdivision(models.Model):
     start_date = models.DateField('Дата формирования', auto_now_add=True)
     finish_date = models.DateField('Дата расформирования', default='', null=True, blank=True)
     func_managers = models.ManyToManyField(Employee, verbose_name='Функциональные руководители', blank=True)
+    
+    doc_info = models.TextField('doc_info', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -123,6 +129,8 @@ class Position(models.Model):
     org_id = models.ForeignKey(Organization, on_delete=models.PROTECT, verbose_name='Организация')
     subdivision_id = models.ForeignKey(Subdivision, on_delete=models.PROTECT, verbose_name='Подразделение')
     education_plan = models.ForeignKey(EducationPlan, on_delete=models.PROTECT, verbose_name='Учебный план')
+    
+    doc_info = models.TextField('doc_info', null=True, blank=True)
 
 
     def __str__(self):
@@ -134,3 +142,21 @@ class Position(models.Model):
         self.is_boss = is_boss,
         self.org_id = org_id
         self.subdivision_id = subdivision_id
+
+
+class Function(models.Model):
+    """Функция должности"""
+    code = models.CharField('Код', max_length=128, null=True, blank=True)
+    name = models.CharField('Название', max_length=255)
+    description = models.TextField('Описание', null=True, blank=True)
+    educcation_methods = models.ManyToManyField(EducationMethod, on_delete=models.PROTECT, verbose_name='Учебные программы', null=True, blank=True)
+    # courses = models.ManyToManyField(Course, on_delete=models.PROTECT, verbose_name='Учебные программы', null=True, blank=True)
+    # tests = models.ManyToManyField(Test, on_delete=models.PROTECT, verbose_name='Учебные программы', null=True, blank=True)
+    
+    doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    def __str__(self) -> str:
+        return self.name
+    
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)

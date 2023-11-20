@@ -48,25 +48,8 @@ class Employee(models.Model):
         else:
             return f"{self.lastname} {self.firstname}"
 
-    def __int__(
-            self,
-            code,
-            lastname,
-            firstname,
-            sex,
-            login,
-            password,
-            hire_date,
-            middlename='',
-    ):
-        self.code = code,
-        self.lastname = lastname,
-        self.firstname = firstname,
-        self.middlename = middlename,
-        self.sex = sex,
-        self.login = login,
-        self.password = password,
-        self.hire_date = hire_date,
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
 
     def save(self):
         if self.middlename:
@@ -87,9 +70,8 @@ class Organization(models.Model):
     def __str__(self):
         return self.display_name
 
-    def __int__(self, display_name, fullname):
-        self.display_name = display_name
-        self.fullname = fullname
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
 
 
 class Subdivision(models.Model):
@@ -109,32 +91,9 @@ class Subdivision(models.Model):
     def __str__(self):
         return self.name
 
-    def __int__(self, code, name, org_id, parent_subdivision_id, is_active, start_date):
-        self.code = code
-        self.name = name
-        self.org_id = org_id
-        self.parent_subdivision_id = parent_subdivision_id
-        self.is_active = is_active
-        self.start_date = start_date
-
-
-class Function(models.Model):
-    """Функция должности"""
-    code = models.CharField('Код', max_length=128, null=True, blank=True)
-    name = models.CharField('Название', max_length=255)
-    description = models.TextField('Описание', null=True, blank=True)
-    educcation_methods = models.ManyToManyField(EducationMethod, on_delete=models.PROTECT, verbose_name='Учебные программы', null=True, blank=True)
-    # courses = models.ManyToManyField(Course, on_delete=models.PROTECT, verbose_name='Учебные программы', null=True, blank=True)
-    # tests = models.ManyToManyField(Test, on_delete=models.PROTECT, verbose_name='Учебные программы', null=True, blank=True)
-    
-    doc_info = models.TextField('doc_info', null=True, blank=True)
-    
-    def __str__(self) -> str:
-        return self.name
-    
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        
+
 
 class Position(models.Model):
     """Должность"""
@@ -144,7 +103,7 @@ class Position(models.Model):
     employee = models.OneToOneField(Employee, on_delete=models.PROTECT, verbose_name='Сотрудник', null=True, blank=True)
     org_id = models.ForeignKey(Organization, on_delete=models.PROTECT, verbose_name='Организация')
     subdivision_id = models.ForeignKey(Subdivision, on_delete=models.PROTECT, verbose_name='Подразделение')
-    function = models.ManyToManyField(Function, on_delete=models.PROTECT, verbose_name='Функции')
+    function = models.ManyToManyField(to='training_center.Function', verbose_name='Функции')
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
 
@@ -152,9 +111,7 @@ class Position(models.Model):
     def __str__(self):
         return self.name
 
-    def __int__(self, code, name, is_boss, org_id, subdivision_id):
-        self.code = code
-        self.name = name
-        self.is_boss = is_boss,
-        self.org_id = org_id
-        self.subdivision_id = subdivision_id
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+     
+        

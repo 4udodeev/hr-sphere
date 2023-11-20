@@ -1,6 +1,9 @@
 from typing import Any
 from django.db import models
-from employees.models import Employee
+
+
+from elearning.models import Course, Test
+
 
 
 class EducationOrg(models.Model):
@@ -14,15 +17,15 @@ class EducationOrg(models.Model):
     def __str__(self):
         return self.display_name
 
-    def __int__(self, display_name, fullname):
-        self.display_name = display_name
-        self.fullname = fullname
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
 
 class EventForm(models.Model):
     """Форма проведения обучения"""
     
     code = models.CharField('Код', max_length=255, default='', null=True, blank=True)
-    name = models.CharField('Учебная программа', max_length=255, default='')
+    name = models.CharField('Форма проведения', max_length=255, default='')
     description = models.TextField('Описание', null=True, blank=True)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
@@ -67,14 +70,38 @@ class RiskLevel(models.Model):
         super().__init__(*args, **kwargs)
         
 
-class TypeOfCertificate(models.Model):
-    """Тип сертификата"""
+class EducationMethod(models.Model):
+    """Учебная программа"""
     
+    EDUTYPES = [('1', 'Обязательное'), ('2', 'Дополнительное')]
+
     code = models.CharField('Код', max_length=255, default='', null=True, blank=True)
-    name = models.CharField('Тип сертификата', max_length=255, default='')
-    duration_years = models.PositiveIntegerField('Срок действия в годах', null=True, blank=True)
-    forever = models.BooleanField('Бессрочный', default=False)
-    cost = models.FloatField('Стоимость', default='', null=True, blank=True)
+    name = models.CharField('Учебная программа', max_length=255, default='')
+    education_org = models.ForeignKey(EducationOrg, verbose_name='Обучающая организация', on_delete=models.PROTECT, null=True, blank=True)
+    event_form = models.ForeignKey(EventForm, verbose_name='Форма проведения', on_delete=models.PROTECT, null=True, blank=True)
+    cost = models.FloatField('Стоимость', null=True, blank=True)
+    duration_hours = models.IntegerField('Продолжительность в часах', null=True, blank=True)
+    education_type = models.CharField('Тип обучения', max_length=255, choices=EDUTYPES, null=True, blank=True)
+    direction_of_training = models.ForeignKey(DirectionOfTraining, verbose_name='Направление обучения', on_delete=models.PROTECT, null=True, blank=True)
+    risk_level = models.ForeignKey(RiskLevel, verbose_name='Уровень риска', on_delete=models.PROTECT, null=True, blank=True)
+    
+    doc_info = models.TextField('doc_info', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+    
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class Function(models.Model):
+    """Функция должности"""
+    code = models.CharField('Код', max_length=128, null=True, blank=True)
+    name = models.CharField('Название', max_length=255)
+    description = models.TextField('Описание', null=True, blank=True)
+    education_methods = models.ManyToManyField(EducationMethod, verbose_name='Учебные программы')
+    courses = models.ManyToManyField(Course, verbose_name='Курсы', null=True, blank=True)
+    tests = models.ManyToManyField(Test, verbose_name='Тесты', null=True, blank=True)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
@@ -83,57 +110,4 @@ class TypeOfCertificate(models.Model):
     
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-
-
-class CertificateFile(models.Model):
-    file = models.FileField(upload_to="files/%Y/%m/%d")
-
-
-class Certificate(models.Model):
-    """Сертификат"""
-    
-    serial = models.CharField('Серия', max_length=255, default='', null=True, blank=True)
-    number = models.CharField('Номер', max_length=255, default='', null=True, blank=True)
-    type_of_certificate = models.ForeignKey(TypeOfCertificate,'Тип сертификата', on_delete=models.PROTECT, default='')
-    desctription = models.TextField('Описание', null=True, blank=True)
-    employee = models.ForeignKey(Employee, 'Сотрудник', on_delete=models.PROTECT)
-    # event = models.ForeignKey(Event, 'Мероприятие', on_delete=models.PROTECT, null=True, blank=True)
-    # course = models.ForeignKey(Course, 'Электронный курс', on_delete=models.PROTECT, null=True, blank=True)
-    # test = models.ForeignKey(Test, 'Тест', on_delete=models.PROTECT, null=True, blank=True)
-    delivery_date = models.DateField('Дата выдачи', auto_now_add=False)
-    expire_date = models.DateField('Срок действия', auto_now_add=False, null=True, blank=True)
-    valid = models.BooleanField('Действилтелен', default=True)
-    files=models.ManyToManyField(CertificateFile, verbose_name='Файлы', null=True, blank=True)
-    
-    doc_info = models.TextField('doc_info', null=True, blank=True)
-
-    def __str__(self):
-        return self.employee
-    
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-
-
-class EducationMethod(models.Model):
-    """Учебная программа"""
-    
-    EDUTYPES = ('Обязательное', 'Дополнительное')
-
-    code = models.CharField('Код', max_length=255, default='', null=True, blank=True)
-    name = models.CharField('Учебная программа', max_length=255, default='')
-    education_org = models.ForeignKey(EducationOrg, verbose_name='Обучающая организация', on_delete=models.PROTECT, null=True, blank=True)
-    event_form = models.ForeignKey('Форма проведения', on_delete=models.PROTECT, null=True, blank=True)
-    cost = models.FloatField('Стоимость', null=True, blank=True)
-    duration_hours = models.IntegerField('Продолжительность в часах', null=True, blank=True)
-    education_type = models.CharField('Тип обучения', max_length=255, choices=EDUTYPES, null=True, blank=True)
-    direction_of_training = models.ForeignKey(DirectionOfTraining, verbose_name='Направление обучения', on_delete=models.PROTECT, null=True, blank=True)
-    risk_level = models.ForeignKey(RiskLevel, verbose_name='Уровень риска', on_delete=models.PROTECT, null=True, blank=True)
-    type_of_certificate = models.ForeignKey(TypeOfCertificate, verbose_name='Тип сертификата', on_delete=models.PROTECT, null=True, blank=True)
-    
-    doc_info = models.TextField('doc_info', null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-    
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
+        

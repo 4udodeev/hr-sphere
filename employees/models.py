@@ -3,8 +3,6 @@ from typing import Any
 
 from django.db import models
 
-from training_center.models import EducationMethod
-
 
 class Employee(models.Model):
     """Сотрудник"""

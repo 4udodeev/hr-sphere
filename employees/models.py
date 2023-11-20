@@ -1,4 +1,3 @@
-import datetime
 from typing import Any
 
 from django.db import models
@@ -106,7 +105,6 @@ class Position(models.Model):
     function = models.ManyToManyField(to='training_center.Function', verbose_name='Функции')
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
-
 
     def __str__(self):
         return self.name

@@ -79,10 +79,12 @@ WSGI_APPLICATION = 'hr_sphere.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        'USER': 'admin',
+        'ENGINE': 'django.db.backends.postgresql', # 'django.db.backends.sqlite3',
+        'NAME': 'hr_sphere', # BASE_DIR / 'db.sqlite3',
+        'USER': 'postgres', # 'admin',
         'PASSWORD': 'Vch74192',
+        'HOST': 'localhost',
+        'PORT': 5432,
     }
 }
 

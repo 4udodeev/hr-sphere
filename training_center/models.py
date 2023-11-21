@@ -100,8 +100,8 @@ class Function(models.Model):
     name = models.CharField('Название', max_length=255)
     description = models.TextField('Описание', null=True, blank=True)
     education_methods = models.ManyToManyField(EducationMethod, verbose_name='Учебные программы')
-    courses = models.ManyToManyField(Course, verbose_name='Курсы', null=True, blank=True)
-    tests = models.ManyToManyField(Test, verbose_name='Тесты', null=True, blank=True)
+    courses = models.ManyToManyField(Course, verbose_name='Курсы', blank=True)
+    tests = models.ManyToManyField(Test, verbose_name='Тесты', blank=True)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     

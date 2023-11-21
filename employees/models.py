@@ -29,7 +29,7 @@ class Employee(models.Model):
 
     # Данные о работнике
     login = models.CharField('Логин', max_length=255, default=code)
-    password = models.CharField('Пароль', max_length=255, default=code)
+    password = models.CharField('Пароль', max_length=255, default=code) # при создании делать рандомным 8 символов
     change_password = models.BooleanField('Необходимо сменить пароль', default=True)
     position_id = models.CharField('Должность', max_length=255, null=True, blank=True)
     hire_date = models.DateField('Дата приема', auto_now_add=True)
@@ -112,4 +112,3 @@ class Position(models.Model):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
      
-        

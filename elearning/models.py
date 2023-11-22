@@ -145,22 +145,3 @@ class TestResult(models.Model):
     
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-
-
-class PollEntry(models.Model):
-    """Вариант ответа на вопрос"""
-    
-    code = models.CharField('Код', max_length=128, null=True, blank=True)
-    name = models.CharField('Название', max_length=255)
-    description = models.TextField('Описание', null=True, blank=True)
-    weight = models.SmallIntegerField('Вес ответа')
-    true = models.BooleanField('Правильный ответ', default=False)
-    
-    doc_info = models.TextField('doc_info', null=True, blank=True)
-    
-    def __str__(self):
-        return self.name
-    
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-

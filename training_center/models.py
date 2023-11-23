@@ -15,10 +15,10 @@ class EducationOrg(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'education_org'
+        db_table = 'education_orgs'
         verbose_name = 'Обучающая организация'
         verbose_name_plural = 'Обучающие организации'
-        ordering = ['name']
+        ordering = ['display_name']
 
     def __str__(self):
         return self.display_name
@@ -37,7 +37,7 @@ class EventForm(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'event_form'
+        db_table = 'event_forms'
         verbose_name = 'Форма проведения обучения'
         verbose_name_plural = 'Формы проведения обучения'
         ordering = ['name']
@@ -59,7 +59,7 @@ class DirectionOfTraining(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'direction_of_training'
+        db_table = 'directions_of_training'
         verbose_name = 'Вид обучения'
         verbose_name_plural = 'Виды обучения'
         ordering = ['name']
@@ -82,7 +82,7 @@ class RiskLevel(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'risk_level'
+        db_table = 'risk_levels'
         verbose_name = 'Уровень риска'
         verbose_name_plural = 'Уровни риска'
         ordering = ['name']
@@ -112,7 +112,7 @@ class EducationMethod(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'education_method'
+        db_table = 'education_methods'
         verbose_name = 'Учебная программа'
         verbose_name_plural = 'Учебные программы'
         ordering = ['name']
@@ -136,7 +136,7 @@ class Function(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'function'
+        db_table = 'functions'
         verbose_name = 'Функция должности'
         verbose_name_plural = 'Функции должностей'
         ordering = ['name']

@@ -15,7 +15,7 @@ class ContractType(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'contract_type'
+        db_table = 'contract_types'
         verbose_name = 'Тип договора'
         verbose_name_plural = 'Типы договоров'
         ordering = ['name']
@@ -90,7 +90,7 @@ class Contract(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'contract'
+        db_table = 'contracts'
         verbose_name = 'Договор'
         verbose_name_plural = 'Договоры'
         ordering = ['name']
@@ -137,7 +137,7 @@ class Place(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'place'
+        db_table = 'places'
         verbose_name = 'Место проведения'
         verbose_name_plural = 'Места проведения'
         ordering = ['name']
@@ -198,7 +198,7 @@ class Event(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'event'
+        db_table = 'events'
         verbose_name = 'Мероприятие'
         verbose_name_plural = 'Мероприятия'
         ordering = ['name']
@@ -222,7 +222,7 @@ class TypeOfCertificate(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'type_of_certificate'
+        db_table = 'type_of_certificates'
         verbose_name = 'Тип сертификата'
         verbose_name_plural = 'Типы сертификатов'
         ordering = ['name']
@@ -262,10 +262,10 @@ class Certificate(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'certificate'
+        db_table = 'certificates'
         verbose_name = 'Сертификат'
         verbose_name_plural = 'Сертификаты'
-        ordering = ['name']
+        ordering = ['employee']
 
     def __str__(self):
         return self.employee
@@ -286,7 +286,7 @@ class PollEntry(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'poll_entry'
+        db_table = 'poll_entryes'
         verbose_name = 'Вариант ответа'
         verbose_name_plural = 'Варианты ответов'
         ordering = ['name']
@@ -319,7 +319,7 @@ class PollQuestion(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'poll_question'
+        db_table = 'poll_questions'
         verbose_name = 'Вопрос опроса'
         verbose_name_plural = 'Вопросы опросов'
         ordering = ['name']
@@ -343,7 +343,7 @@ class Poll(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'poll'
+        db_table = 'polls'
         verbose_name = 'Опрос'
         verbose_name_plural = 'Опросы'
         ordering = ['name']
@@ -379,7 +379,7 @@ class PollResult(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'poll_result'
+        db_table = 'poll_results'
         verbose_name = 'Результат опроса'
         verbose_name_plural = 'Результаты опросов'
         ordering = ['name']

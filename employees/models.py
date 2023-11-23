@@ -42,7 +42,7 @@ class Employee(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'employee'
+        db_table = 'employees'
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
         ordering = ['fullname']
@@ -74,10 +74,10 @@ class Organization(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'organization'
+        db_table = 'organizations'
         verbose_name = 'Организация'
         verbose_name_plural = 'Организации'
-        ordering = ['name']
+        ordering = ['display_name']
 
     def __str__(self):
         return self.display_name
@@ -91,20 +91,20 @@ class Subdivision(models.Model):
     code = models.CharField('Код подразделения', max_length=255)
     name = models.CharField('Наименование', max_length=255)
     org_id = models.ForeignKey(Organization, on_delete=models.PROTECT, verbose_name='Организация')
-    parent_subdivision_id = models.ForeignKey('self', blank=True, related_name='children', on_delete=models.PROTECT,
+    parent_subdivision = models.ForeignKey('self', blank=True, related_name='children', on_delete=models.PROTECT,
                                               verbose_name='Родительское подразделение', null=True)
     is_active = models.BooleanField('Активное', default=True)
     start_date = models.DateField('Дата формирования', auto_now_add=True)
-    finish_date = models.DateField('Дата расформирования', default='', null=True, blank=True)
+    finish_date = models.DateField('Дата расформирования', null=True, blank=True)
     func_managers = models.ManyToManyField(Employee, verbose_name='Функциональные руководители', blank=True)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'subdivision'
+        db_table = 'subdivisions'
         verbose_name = 'Подразделение'
         verbose_name_plural = 'Подразделения'
-        ordering = ['name']
+        ordering = ['code']
 
     def __str__(self):
         return self.name
@@ -126,7 +126,7 @@ class Position(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'position'
+        db_table = 'positions'
         verbose_name = 'Должность'
         verbose_name_plural = 'Должности'
         ordering = ['name']

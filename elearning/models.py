@@ -17,7 +17,7 @@ class Course(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'сourse'
+        db_table = 'сourses'
         verbose_name = 'Электронный курс'
         verbose_name_plural = 'Электронные курсы'
         ordering = ['name']
@@ -53,7 +53,7 @@ class CourseResult(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'course_result'
+        db_table = 'course_results'
         verbose_name = 'Результат курса'
         verbose_name_plural = 'Результаты курсов'
         ordering = ['name']
@@ -77,7 +77,7 @@ class TestEntry(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'test_entry'
+        db_table = 'test_entryes'
         verbose_name = 'Вариант ответа'
         verbose_name_plural = 'Варианты ответов'
         ordering = ['name']
@@ -109,7 +109,7 @@ class TestQuestion(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'test_question'
+        db_table = 'test_questions'
         verbose_name = 'Вопрос'
         verbose_name_plural = 'Вопросы'
         ordering = ['name']
@@ -134,7 +134,7 @@ class Test(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'test'
+        db_table = 'tests'
         verbose_name = 'Электронный Тест'
         verbose_name_plural = 'Электронные Тесты'
         ordering = ['name']
@@ -171,7 +171,7 @@ class TestResult(models.Model):
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
     class Meta:
-        db_table = 'test_result'
+        db_table = 'test_results'
         verbose_name = 'Результат теста'
         verbose_name_plural = 'Результаты тестов'
         ordering = ['name']

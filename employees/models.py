@@ -8,7 +8,7 @@ class Employee(models.Model):
     
     GENDERS = (
         ('m', 'Мужчина'),
-        ('f', 'Женщина')
+        ('w', 'Женщина')
     )
 
     # Персональная информация
@@ -31,7 +31,6 @@ class Employee(models.Model):
     login = models.CharField('Логин', max_length=255, default=code)
     password = models.CharField('Пароль', max_length=255, default=code) # при создании делать рандомным 8 символов
     change_password = models.BooleanField('Необходимо сменить пароль', default=True)
-    position_id = models.CharField('Должность', max_length=255, null=True, blank=True)
     hire_date = models.DateField('Дата приема', auto_now_add=True)
     dismiss_date = models.DateField('Дата увольнения', default='', null=True, blank=True)
     is_dismiss = models.BooleanField('Уволен', default=False, null=True, blank=True)
@@ -113,15 +112,38 @@ class Subdivision(models.Model):
         super().__init__(*args, **kwargs)
 
 
+class BasePosition(models.Model):
+    """Базовая должность"""
+    
+    code = models.CharField('Код', max_length=255, default='')
+    name = models.CharField('Название', max_length=255, default='')
+    function = models.ManyToManyField(to='training_center.Function', verbose_name='Функции')
+    
+    doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'base_positions'
+        verbose_name = 'Базовая должность'
+        verbose_name_plural = 'Базовые должности'
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class Position(models.Model):
     """Должность"""
+    
     code = models.CharField('Код', max_length=255, default='')
     name = models.CharField('Название', max_length=255, default='')
     is_boss = models.BooleanField('Является руководителем', default=False)
-    employee = models.OneToOneField(Employee, on_delete=models.PROTECT, verbose_name='Сотрудник', null=True, blank=True)
-    org_id = models.ForeignKey(Organization, on_delete=models.PROTECT, verbose_name='Организация')
-    subdivision_id = models.ForeignKey(Subdivision, on_delete=models.PROTECT, verbose_name='Подразделение')
-    function = models.ManyToManyField(to='training_center.Function', verbose_name='Функции')
+    employee = models.ForeignKey(Employee, on_delete=models.PROTECT, verbose_name='Сотрудник', null=True, blank=True)
+    org = models.ForeignKey(Organization, on_delete=models.PROTECT, verbose_name='Организация')
+    subdivision = models.ForeignKey(Subdivision, on_delete=models.PROTECT, verbose_name='Подразделение', null=True, blank=True)
+    base_position = models.ForeignKey(BasePosition, verbose_name='Базовая должность', on_delete=models.PROTECT, null=True, blank=True)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     

@@ -14,6 +14,12 @@ class ContractType(models.Model):
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
+    class Meta:
+        db_table = 'contract_type'
+        verbose_name = 'Тип договора'
+        verbose_name_plural = 'Типы договоров'
+        ordering = ['name']
+    
     def __str__(self):
         return self.name
     
@@ -23,6 +29,11 @@ class ContractType(models.Model):
 
 class ContractFile(models.Model):
     file = models.FileField(upload_to="files/%Y/%m/%d")
+    
+    class Meta:
+        db_table = 'contract_file'
+        verbose_name = 'Файл договора'
+        verbose_name_plural = 'Файлы договора'
 
 
 class Contract(models.Model):
@@ -78,6 +89,12 @@ class Contract(models.Model):
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
+    class Meta:
+        db_table = 'contract'
+        verbose_name = 'Договор'
+        verbose_name_plural = 'Договоры'
+        ordering = ['name']
+    
     def __str__(self):
         return self.name
     
@@ -93,6 +110,12 @@ class Region(models.Model):
     description = models.TextField('Описание', null=True, blank=True)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'region'
+        verbose_name = 'Регион'
+        verbose_name_plural = 'Регионы'
+        ordering = ['name']
     
     def __str__(self):
         return self.name
@@ -113,6 +136,12 @@ class Place(models.Model):
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
+    class Meta:
+        db_table = 'place'
+        verbose_name = 'Место проведения'
+        verbose_name_plural = 'Места проведения'
+        ordering = ['name']
+    
     def __str__(self):
         return self.name
     
@@ -122,6 +151,11 @@ class Place(models.Model):
 
 class EventFile(models.Model):
     file = models.FileField(upload_to="files/%Y/%m/%d")
+    
+    class Meta:
+        db_table = 'event_file'
+        verbose_name = 'Файл мероприятия'
+        verbose_name_plural = 'файлы мероприятия'
 
 
 class Event(models.Model):
@@ -163,6 +197,12 @@ class Event(models.Model):
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
+    class Meta:
+        db_table = 'event'
+        verbose_name = 'Мероприятие'
+        verbose_name_plural = 'Мероприятия'
+        ordering = ['name']
+    
     def __str__(self):
         return self.name
     
@@ -181,6 +221,12 @@ class TypeOfCertificate(models.Model):
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
+    class Meta:
+        db_table = 'type_of_certificate'
+        verbose_name = 'Тип сертификата'
+        verbose_name_plural = 'Типы сертификатов'
+        ordering = ['name']
+    
     def __str__(self) -> str:
         return self.name
     
@@ -190,6 +236,11 @@ class TypeOfCertificate(models.Model):
 
 class CertificateFile(models.Model):
     file = models.FileField(upload_to="files/%Y/%m/%d")
+    
+    class Meta:
+        db_table = 'certificate_file'
+        verbose_name = 'Файл сертификата'
+        verbose_name_plural = 'Файлы сертификатов'
 
 
 class Certificate(models.Model):
@@ -209,6 +260,12 @@ class Certificate(models.Model):
     files=models.ManyToManyField(CertificateFile, verbose_name='Файлы')
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'certificate'
+        verbose_name = 'Сертификат'
+        verbose_name_plural = 'Сертификаты'
+        ordering = ['name']
 
     def __str__(self):
         return self.employee
@@ -227,6 +284,12 @@ class PollEntry(models.Model):
     true = models.BooleanField('Правильный ответ', default=False)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'poll_entry'
+        verbose_name = 'Вариант ответа'
+        verbose_name_plural = 'Варианты ответов'
+        ordering = ['name']
     
     def __str__(self):
         return self.name
@@ -255,6 +318,12 @@ class PollQuestion(models.Model):
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
+    class Meta:
+        db_table = 'poll_question'
+        verbose_name = 'Вопрос опроса'
+        verbose_name_plural = 'Вопросы опросов'
+        ordering = ['name']
+    
     def __str__(self):
         return self.name
     
@@ -272,6 +341,12 @@ class Poll(models.Model):
     access = models.TextField('Доступ')
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'poll'
+        verbose_name = 'Опрос'
+        verbose_name_plural = 'Опросы'
+        ordering = ['name']
     
     def __str__(self):
         return self.name
@@ -302,6 +377,12 @@ class PollResult(models.Model):
     poll_details = models.TextField('Подробные результаты опроса')
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'poll_result'
+        verbose_name = 'Результат опроса'
+        verbose_name_plural = 'Результаты опросов'
+        ordering = ['name']
     
     def __str__(self):
         return self.name

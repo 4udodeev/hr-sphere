@@ -13,6 +13,12 @@ class EducationOrg(models.Model):
     contacts = models.CharField('Контакты', max_length=255, default='')
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'education_org'
+        verbose_name = 'Обучающая организация'
+        verbose_name_plural = 'Обучающие организации'
+        ordering = ['name']
 
     def __str__(self):
         return self.display_name
@@ -30,6 +36,12 @@ class EventForm(models.Model):
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
+    class Meta:
+        db_table = 'event_form'
+        verbose_name = 'Форма проведения обучения'
+        verbose_name_plural = 'Формы проведения обучения'
+        ordering = ['name']
+    
     def __str__(self) -> str:
         return self.name
     
@@ -45,6 +57,12 @@ class DirectionOfTraining(models.Model):
     description = models.TextField('Описание', null=True, blank=True)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'direction_of_training'
+        verbose_name = 'Вид обучения'
+        verbose_name_plural = 'Виды обучения'
+        ordering = ['name']
     
     def __str__(self) -> str:
         return self.name
@@ -62,6 +80,12 @@ class RiskLevel(models.Model):
     aftereffects_incident = models.TextField('Последствия при НС, ЧП, ЧС', null=True, blank=True)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'risk_level'
+        verbose_name = 'Уровень риска'
+        verbose_name_plural = 'Уровни риска'
+        ordering = ['name']
     
     def __str__(self) -> str:
         return self.name
@@ -86,6 +110,12 @@ class EducationMethod(models.Model):
     risk_level = models.ForeignKey(RiskLevel, verbose_name='Уровень риска', on_delete=models.PROTECT, null=True, blank=True)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'education_method'
+        verbose_name = 'Учебная программа'
+        verbose_name_plural = 'Учебные программы'
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -104,6 +134,12 @@ class Function(models.Model):
     tests = models.ManyToManyField(Test, verbose_name='Тесты', blank=True)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'function'
+        verbose_name = 'Функция должности'
+        verbose_name_plural = 'Функции должностей'
+        ordering = ['name']
     
     def __str__(self) -> str:
         return self.name

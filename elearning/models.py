@@ -16,6 +16,12 @@ class Course(models.Model):
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
+    class Meta:
+        db_table = 'сourse'
+        verbose_name = 'Электронный курс'
+        verbose_name_plural = 'Электронные курсы'
+        ordering = ['name']
+    
     def __str__(self):
         return self.name
     
@@ -46,6 +52,12 @@ class CourseResult(models.Model):
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
+    class Meta:
+        db_table = 'course_result'
+        verbose_name = 'Результат курса'
+        verbose_name_plural = 'Результаты курсов'
+        ordering = ['name']
+    
     def __str__(self):
         return self.name
     
@@ -63,6 +75,12 @@ class TestEntry(models.Model):
     true = models.BooleanField('Правильный ответ', default=False)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'test_entry'
+        verbose_name = 'Вариант ответа'
+        verbose_name_plural = 'Варианты ответов'
+        ordering = ['name']
     
     def __str__(self):
         return self.name
@@ -90,6 +108,12 @@ class TestQuestion(models.Model):
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
     
+    class Meta:
+        db_table = 'test_question'
+        verbose_name = 'Вопрос'
+        verbose_name_plural = 'Вопросы'
+        ordering = ['name']
+    
     def __str__(self):
         return self.name
     
@@ -108,6 +132,12 @@ class Test(models.Model):
     questions = models.ManyToManyField(TestQuestion, verbose_name='Djghjcs')
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'test'
+        verbose_name = 'Электронный Тест'
+        verbose_name_plural = 'Электронные Тесты'
+        ordering = ['name']
     
     def __str__(self):
         return self.name
@@ -139,6 +169,12 @@ class TestResult(models.Model):
     test_details = models.TextField('Подробные результаты теста')
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'test_result'
+        verbose_name = 'Результат теста'
+        verbose_name_plural = 'Результаты тестов'
+        ordering = ['name']
     
     def __str__(self):
         return self.name

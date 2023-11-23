@@ -5,7 +5,7 @@ from django.db import models
 
 class Employee(models.Model):
     """Сотрудник"""
-
+    
     GENDERS = (
         ('m', 'Мужчина'),
         ('f', 'Женщина')
@@ -40,6 +40,12 @@ class Employee(models.Model):
                                    blank=True)  # Первое изменение должно прописываться при создании
     history_states = models.JSONField('Состояния работника', default=dict, blank=True)
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'employee'
+        verbose_name = 'Сотрудник'
+        verbose_name_plural = 'Сотрудники'
+        ordering = ['fullname']
 
     def __str__(self):
         if self.middlename:
@@ -56,6 +62,7 @@ class Employee(models.Model):
         else:
             self.fullname = f"{self.lastname} {self.firstname}"
         super().save(self)
+        
 
 
 class Organization(models.Model):
@@ -65,6 +72,12 @@ class Organization(models.Model):
     func_managers = models.ManyToManyField(Employee, verbose_name='Функциональыне руководители', blank=True)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'organization'
+        verbose_name = 'Организация'
+        verbose_name_plural = 'Организации'
+        ordering = ['name']
 
     def __str__(self):
         return self.display_name
@@ -86,6 +99,12 @@ class Subdivision(models.Model):
     func_managers = models.ManyToManyField(Employee, verbose_name='Функциональные руководители', blank=True)
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'subdivision'
+        verbose_name = 'Подразделение'
+        verbose_name_plural = 'Подразделения'
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -105,6 +124,12 @@ class Position(models.Model):
     function = models.ManyToManyField(to='training_center.Function', verbose_name='Функции')
     
     doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'position'
+        verbose_name = 'Должность'
+        verbose_name_plural = 'Должности'
+        ordering = ['name']
 
     def __str__(self):
         return self.name

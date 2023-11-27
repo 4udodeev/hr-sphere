@@ -124,11 +124,37 @@ class EducationMethod(models.Model):
         super().__init__(*args, **kwargs)
 
 
+class Competention(models.Model):
+    """Компетенция"""
+    
+    code = models.CharField('Код', max_length=128, null=True, blank=True)
+    name = models.CharField('Название', max_length=255)
+    description = models.TextField('Описание', null=True, blank=True)
+    education_methods = models.ManyToManyField(EducationMethod, verbose_name='Учебные программы')
+    courses = models.ManyToManyField(Course, verbose_name='Курсы', blank=True)
+    tests = models.ManyToManyField(Test, verbose_name='Тесты', blank=True)
+    
+    doc_info = models.TextField('doc_info', null=True, blank=True)
+    
+    class Meta:
+        db_table = 'competentions'
+        verbose_name = 'Компетенция'
+        verbose_name_plural = 'Компетенции'
+        ordering = ['name']
+    
+    def __str__(self) -> str:
+        return self.name
+    
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class Function(models.Model):
     """Функция должности"""
     code = models.CharField('Код', max_length=128, null=True, blank=True)
     name = models.CharField('Название', max_length=255)
     description = models.TextField('Описание', null=True, blank=True)
+    competentions = models.ManyToManyField(Competention, verbose_name='Компетенции')
     education_methods = models.ManyToManyField(EducationMethod, verbose_name='Учебные программы')
     courses = models.ManyToManyField(Course, verbose_name='Курсы', blank=True)
     tests = models.ManyToManyField(Test, verbose_name='Тесты', blank=True)

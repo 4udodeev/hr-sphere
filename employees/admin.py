@@ -4,8 +4,7 @@ from django.urls import path
 from openpyxl.reader.excel import load_workbook
 from hr_sphere.forms import XlsxImportForm
 from django.contrib.auth.base_user import BaseUserManager
-import datetime as dt
-
+from datetime import date
 
 from .models import *
 
@@ -35,8 +34,9 @@ class SubdivisionAdmin(admin.ModelAdmin):
             worksheet = workbook.active
 
             # Читаем файл построчно и создаем объекты.
-            records_to_save = []
+            i = 0
             for row in worksheet.rows:
+                records_to_save = []
                 if not Subdivision.objects.filter(code=row[0].value).exists():
                     new_obj = Subdivision(
                         code=row[0].value, 
@@ -44,7 +44,8 @@ class SubdivisionAdmin(admin.ModelAdmin):
                         org_id=Organization.objects.get(id=1),
                     )
                     records_to_save.append(new_obj)
-            Subdivision.objects.bulk_create(records_to_save)
+                    Subdivision.objects.bulk_create(records_to_save)
+                    i += 1
             
             for row in worksheet.rows:
                 if Subdivision.objects.filter(code=row[0].value).exists():
@@ -53,7 +54,7 @@ class SubdivisionAdmin(admin.ModelAdmin):
                         cur_obj.parent_subdivision = Subdivision.objects.get(code=row[2].value)
                     cur_obj.save()
 
-            self.message_user(request, f'Импортировано строк: {len(records_to_save)}.')
+            self.message_user(request, f'Импортировано строк: {i}.')
             return redirect('/admin/employees/subdivision/')
 
         context['form'] = XlsxImportForm()
@@ -84,33 +85,35 @@ class PositionAdmin(admin.ModelAdmin):
             worksheet = workbook.active
 
             # Читаем файл построчно и создаем объекты.
-            records_to_save = []
+            i = 0
             for row in worksheet.rows:
+                records_to_save = []
                 if not Position.objects.filter(code=row[0].value).exists():
                     new_obj = Position(
                         code=row[0].value, 
-                        name=row[8].value,
-                        is_boss=True if row[9].value=='+' else False,
+                        name=row[11].value,
+                        is_boss=False,
                         employee=Employee.objects.get(code=row[0].value),
-                        subdivision=Subdivision.objects.get(code=row[10].value) if Subdivision.objects.filter(code=row[10].value).exists() else None,
+                        subdivision=Subdivision.objects.get(code=row[12].value) if Subdivision.objects.filter(code=row[10].value).exists() else None,
                         org=Organization.objects.get(id=1),
                     )
                     records_to_save.append(new_obj)
-            Position.objects.bulk_create(records_to_save)
+                    Position.objects.bulk_create(records_to_save)
+                    i += 1
             
             j=0
             for row in worksheet.rows:
                 if Position.objects.filter(code=row[0].value).exists():
                     cur_obj = Position.objects.get(code=row[0].value)
-                    cur_obj.name=row[8].value,
-                    cur_obj.is_boss=row[9].value,
+                    cur_obj.name=row[11].value,
+                    cur_obj.is_boss=False,
                     cur_obj.employee=Employee.objects.get(code=row[0].value),
-                    cur_obj.subdivision=Subdivision.objects.get(code=row[10].value),
+                    cur_obj.subdivision=Subdivision.objects.get(code=row[12].value),
                     cur_obj.org=Organization.objects.get(id=1),
                     cur_obj.save()
                     j += 1
 
-            self.message_user(request, f'Импортировано строк: {len(records_to_save)}.')
+            self.message_user(request, f'Импортировано строк: {i}.')
             self.message_user(request, f'Изменено строк: {j}.')
             return redirect('/admin/employees/position/')
 
@@ -142,8 +145,9 @@ class EmployeeAdmin(admin.ModelAdmin):
             worksheet = workbook.active
 
             # Читаем файл построчно и создаем объекты.
-            records_to_save = []
+            i = 0
             for row in worksheet.rows:
+                records_to_save = []
                 if not Employee.objects.filter(code=row[0].value).exists():
                     new_obj = Employee(
                         code=row[0].value,
@@ -152,21 +156,21 @@ class EmployeeAdmin(admin.ModelAdmin):
                         middlename = row[3].value,
                         fullname = f'{row[1].value} {row[2].value} {row[3].value}'.rstrip(),
                         sex = row[4].value,
-                        birth_date = row[7].value.date(),
+                        birth_date = row[5].value.date(),
                         phone = row[6].value,
-                        email = row[5].value,
-                        snils = row[16].value,
-                        education = row[15].value,
+                        email = row[7].value,
+                        education = row[8].value,
                         login = row[0].value,
                         password = BaseUserManager().make_random_password(8),
                         change_password = True,
-                        hire_date = row[12].value.date(),
-                        is_dismiss = True if row[13].value=='+' else False,
-                        is_banned = True if row[13].value=='+' else False,
-                        dismiss_date = row[14].value.date() if row[13].value=='+' else None,
+                        hire_date = row[16].value.date(),
+                        is_dismiss = True if row[18].value=='+' else False,
+                        is_banned = True if row[18].value=='+' else False,
+                        dismiss_date = row[17].value.date() if row[18].value=='+' else None,
                     )
                     records_to_save.append(new_obj)
-            Employee.objects.bulk_create(records_to_save)
+                    Employee.objects.bulk_create(records_to_save)
+                    i += 1
             
             j=0
             for row in worksheet.rows:
@@ -177,22 +181,19 @@ class EmployeeAdmin(admin.ModelAdmin):
                     cur_obj.middlename = row[3].value
                     cur_obj.fullname = f'{row[1].value} {row[2].value} {row[3].value}'.rstrip()
                     cur_obj.sex = row[4].value
-                    cur_obj.birth_date = row[7].value.date()
+                    cur_obj.birth_date = row[5].value.date()
                     cur_obj.phone = row[6].value
-                    cur_obj.email = row[5].value
-                    cur_obj.snils = row[16].value
-                    cur_obj.education = row[15].value
+                    cur_obj.email = row[7].value
+                    cur_obj.education = row[8].value
                     cur_obj.login = row[0].value
-                    cur_obj.password = BaseUserManager().make_random_password(8)
-                    cur_obj.change_password = True
-                    cur_obj.hire_date = row[12].value.date()
-                    cur_obj.is_dismiss = True if row[13].value=='+' else False
-                    cur_obj.is_banned = True if row[13].value=='+' else False
-                    cur_obj.dismiss_date = row[14].value.date() if row[13].value=='+' else None
+                    cur_obj.hire_date = row[16].value.date()
+                    cur_obj.is_dismiss = True if row[18].value=='+' else False
+                    cur_obj.is_banned = True if row[18].value=='+' else False
+                    cur_obj.dismiss_date = row[17].value.date() if row[18].value=='+' else None
                     cur_obj.save()
-                    j = j + 1
+                    j += 1
 
-            self.message_user(request, f'Импортировано строк: {len(records_to_save)}.')
+            self.message_user(request, f'Импортировано строк: {i}')
             self.message_user(request, f'Изменено строк: {j}.')
             return redirect('/admin/employees/employee/')
 
